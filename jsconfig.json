@@ -2,5 +2,8 @@
     "include": [
         "src/**/*.js",
         "lib/**/*.js"
-    ]
+    ],
+    "compilerOptions": {
+      "target": "esnext"
+    }
 }

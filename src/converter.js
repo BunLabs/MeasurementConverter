@@ -1,7 +1,8 @@
+//@ts-check
 (function (he) {
     'use strict';
 
-    const ignoreList = ['script', 'style', 'noscript', 'iframe', 'svg'];
+    const ignoreList = ['script', 'style', 'noscript', 'iframe', 'svg', 'input', 'textarea'];
     const genericRegex = /(?<value>-?\d+(\.\d+)?)\s?(?<unit>°C|°F|C|F|℉|℃|°|degrees F|degrees C|degrees)(?=\W)/g;
     const fractionalRegex = /(?<value>(\d+|(\d+\s?)?([½⅓¼¾⅛⅜⅝⅞]|(\d\/\d))))\s?(?<unit>cups?|tsp|tbsp)/g
 
@@ -25,7 +26,12 @@
                 return NodeFilter.FILTER_REJECT;
             }
 
-            if (node.parentElement.classList === 'converted-measurement') {
+            if (node.parentElement.isContentEditable) {
+                // Skip editable content (e.g. weird WYSIWYG editors that don't use textarea)
+                return NodeFilter.FILTER_REJECT;
+            }
+
+            if (node.parentElement.className === 'converted-measurement') {
                 // Skip previously converted measurements
                 return NodeFilter.FILTER_REJECT;
             }

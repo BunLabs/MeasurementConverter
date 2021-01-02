@@ -16,7 +16,6 @@ Measurements are converted in place. If the unit can't be determined exactly (e.
 ## Known issues
 
 - It only works on plain text. Sites that have special markup for measurements are not supported, as this could potentially break the site, and it is infeasible to support every site on the internet that does it in their own special way.
-- It probably shouldn't support text input fields.
 
 ---
 
