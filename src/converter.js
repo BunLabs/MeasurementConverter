@@ -144,7 +144,7 @@
 
             case 'tbsp':
                 return [{
-                    value: Math.round(value * mlPerTsp),
+                    value: Math.round(value * mlPerTbsp),
                     unit: 'mL',
                     interpretation: 'tbsp.'
                 }];
