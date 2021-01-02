@@ -1,4 +1,4 @@
-(function () {
+(function (he) {
     'use strict';
 
     const ignoreList = ['script', 'style', 'noscript', 'iframe', 'svg'];
@@ -31,19 +31,19 @@
 
     /**
      * Converts Fahrenheit to Celsius.
-     * @param {float} f Fahrenheit.
+     * @param {number} f Fahrenheit.
      */
     const FtoC = f => Math.round((f - 32) / 1.8);
 
     /**
      * Converts Celsius to Fahrenheit.
-     * @param {float} c Celsius.
+     * @param {number} c Celsius.
      */
     const CtoF = c => Math.round((c * 1.8) + 32);
 
     /**
      * @typedef {Object} Measurement
-     * @property {float} value The converted value.
+     * @property {number} value The converted value.
      * @property {string} unit The converted unit.
      * @property {string} [interpretation] The interpreted unit.
      */
@@ -89,13 +89,13 @@
 
         if (conversions.length === 1) {
             const result = conversions[0];
-            return `<abbr class='converted-measurement' title='${original}'>${result.value} ${result.unit}</abbr>`;
+            return `<abbr class='converted-measurement' title='${he.encode(original)}'>${result.value} ${result.unit}</abbr>`;
         }
 
         let result = conversions
             .map(x => `${value} ${x.interpretation} = ${x.value} ${x.unit}`)
             .join('\n');
-        return `<abbr class='converted-measurement' title='${result}'>${original}</abbr>`;
+        return `<abbr class='converted-measurement' title='${he.encode(result)}'>${he.encode(original)}</abbr>`;
     }
 
     /**
@@ -157,4 +157,4 @@
     }
 
     init();
-})();
+})(he);
