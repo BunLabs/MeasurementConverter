@@ -2,7 +2,7 @@
     'use strict';
 
     const ignoreList = ['script', 'style', 'noscript', 'iframe', 'svg'];
-    const genericRegex = /(?<value>-?\d+(\.\d+)?)\s?(?<unit>°C|°F|C|F|℉|℃|°|degrees|degrees F|degrees C)(?=\W)/g;
+    const genericRegex = /(?<value>-?\d+(\.\d+)?)\s?(?<unit>°C|°F|C|F|℉|℃|°|degrees F|degrees C)|degrees(?=\W)/g;
 
     /**
      * A node filter for processing text elements.
