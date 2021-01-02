@@ -3,6 +3,11 @@
     "version": "0.4.0",
     "description": "Automatically converts measurements to the Metric system.",
     "manifest_version": 2,
+    "icons": {
+        "16": "assets/16px.png",
+        "48": "assets/48px.png",
+        "128": "assets/128px.png"
+    },
     "content_scripts": [
         {
             "matches": [
