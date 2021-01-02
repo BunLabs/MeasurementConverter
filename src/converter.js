@@ -3,6 +3,9 @@
 
     const ignoreList = ['script', 'style', 'noscript', 'iframe', 'svg'];
     const genericRegex = /(?<value>-?\d+(\.\d+)?)\s?(?<unit>°C|°F|C|F|℉|℃|°|degrees F|degrees C)|degrees(?=\W)/g;
+    const fractionalRegex = /(?<value>(\d+\s?)?([½⅓¼¾⅛⅜⅝⅞]|(\d\/\d)))\s?(?<unit>cups?)/g
+
+    const mlPerUSCup = 240; // technically 236.5882365 but who cares, really
 
     /**
      * A node filter for processing text elements.
@@ -42,6 +45,56 @@
     const CtoF = c => Math.round((c * 1.8) + 32);
 
     /**
+     * Attempts to parse a string as a number, supports fractions.
+     * @param {string} value The text to parse for a number.
+     * @returns {number} Returns the parsed number, or `null`.
+     */
+    function parseNumber(value) {
+        const fractionPattern = /(\d+\s?)?([½⅓¼¾⅛⅜⅝⅞]|\d\/\d)/;
+        if (!fractionPattern.test(value)) {
+            return parseFloat(value);
+        }
+
+        const [p1, p2] = fractionPattern.exec(value);
+        let n1 = parseFloat(p1);
+        if (!n1) {
+            n1 = 0;
+        }
+
+        let n2 = parseFraction(p2);
+        if (!n2) {
+            n2 = 0;
+        }
+
+        return n1 + n2;
+    }
+
+    /**
+     * Parse a fraction as a number.
+     * @param {string} value The fraction to parse as number.
+     */
+    function parseFraction(value) {
+        switch (value) {
+            case '⅞': return 0.875;
+            case '¾': return 0.75;
+            case '⅝': return 0.625;
+            case '½': return 0.5;
+            case '⅜': return 0.375;
+            case '⅓': return 0.333;
+            case '¼': return 0.25;
+            case '⅛': return 0.125;
+        }
+
+        if (/(\d+)\/(\d+)/g.test(value)) {
+            const [num, denom] = /(\d+)\/(\d+)/g.exec(value);
+            return parseInt(num) / parseInt(denom);
+        }
+
+        console.warn('[Unit Converter] Could not parse fraction "%s"');
+        return parseFloat(value);
+    }
+
+    /**
      * @typedef {Object} Measurement
      * @property {number} value The converted value.
      * @property {string} unit The converted unit.
@@ -49,24 +102,35 @@
      */
     /**
      * Converts a measurement to metric
-     * @param {string} value The raw value to convert.
+     * @param {number} value The value to convert.
      * @param {string} unit The unit of the original value.
      * @returns {Measurement[]} The metric measurement, or `null` if no conversion was done.
      */
     function convertToMetric(value, unit) {
-        const x = parseFloat(value);
         switch (unit) {
             case 'F':
             case '°F':
             case '℉':
             case 'degrees F':
-                return [{ value: FtoC(x), unit: '°C' }];
+                return [{
+                    value: FtoC(value), unit: '°C'
+                }];
 
             case '°':
             case 'degrees':
                 return [
-                    { value: FtoC(x), unit: '°C', interpretation: '°F' },
-                    { value: CtoF(x), unit: '°F', interpretation: '°C' }
+                    { value: FtoC(value), unit: '°C', interpretation: '°F' },
+                    { value: CtoF(value), unit: '°F', interpretation: '°C' }
+                ];
+
+            case 'cups':
+            case 'cup':
+                return [
+                    {
+                        value: Math.round(value * mlPerUSCup),
+                        unit: 'ml',
+                        interpretation: 'US cups'
+                    }
                 ];
 
             default:
@@ -76,7 +140,7 @@
 
     /**
      * Renders an HTML replacement for a detected measurement.
-     * @param {string} value The original value.
+     * @param {number} value The original value.
      * @param {string} unit The original unit.
      * @param {string} original The raw, original string.
      * @returns {string} HTML text to replace the original string with.
@@ -105,7 +169,7 @@
      */
     function getTextElements(node) {
         const walker = document.createTreeWalker(
-            node, NodeFilter.SHOW_TEXT, textNodeFilter, false
+            node, NodeFilter.SHOW_TEXT, textNodeFilter
         );
 
         let textNodes = [];
@@ -128,7 +192,18 @@
                     console.info('[Unit Converter] Processing "%s" in %o', args[0], e);
 
                     const match = args.pop();
-                    return render(match.value, match.unit, args[0]);
+                    const value = parseFloat(match.value);
+                    return render(value, match.unit, args[0]);
+                });
+            }
+
+            if (fractionalRegex.test(e.innerHTML)) {
+                e.innerHTML = e.innerHTML.replaceAll(fractionalRegex, (...args) => {
+                    console.info('[Unit Converter] Processing "%s" in %o', args[0], e);
+
+                    const match = args.pop();
+                    const value = parseFraction(match.value);
+                    return render(value, match.unit, args[0]);
                 });
             }
         });
