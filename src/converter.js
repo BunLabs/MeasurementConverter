@@ -3,9 +3,11 @@
 
     const ignoreList = ['script', 'style', 'noscript', 'iframe', 'svg'];
     const genericRegex = /(?<value>-?\d+(\.\d+)?)\s?(?<unit>°C|°F|C|F|℉|℃|°|degrees F|degrees C)|degrees(?=\W)/g;
-    const fractionalRegex = /(?<value>(\d+\s?)?([½⅓¼¾⅛⅜⅝⅞]|(\d\/\d)))\s?(?<unit>cups?)/g
+    const fractionalRegex = /(?<value>(\d+|(\d+\s?)?([½⅓¼¾⅛⅜⅝⅞]|(\d\/\d))))\s?(?<unit>cups?|tsp|tbsp)/g
 
     const mlPerUSCup = 240; // technically 236.5882365 but who cares, really
+    const mlPerTsp = 5; // 4.92892159375
+    const mlPerTbsp = 15; // 14.78676478125 mL
 
     /**
      * A node filter for processing text elements.
@@ -128,10 +130,24 @@
                 return [
                     {
                         value: Math.round(value * mlPerUSCup),
-                        unit: 'ml',
+                        unit: 'mL',
                         interpretation: 'US cups'
                     }
                 ];
+
+            case 'tsp':
+                return [{
+                    value: Math.round(value * mlPerTsp),
+                    unit: 'mL',
+                    interpretation: 'tsp.'
+                }];
+
+            case 'tbsp':
+                return [{
+                    value: Math.round(value * mlPerTsp),
+                    unit: 'mL',
+                    interpretation: 'tbsp.'
+                }];
 
             default:
                 return null;
