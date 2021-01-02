@@ -9,7 +9,7 @@ Current units supported:
 - Fahrenheit to Celsius
 - Cups, teaspoons and tablespoons to milliliters
 
-Measurements are converted in place. If the unit can't be determined exactly (e.g. 350 ° instead of 177 °C' or 350 °C) it will show all possible interpretations in the tooltip, and keep the original text.
+Measurements are converted in place. If the unit can't be determined exactly (e.g. `350 °` instead of `350 °F` or `350 °C`) it will show all possible interpretations in the tooltip, and keep the original text.
 
 
 
@@ -17,7 +17,6 @@ Measurements are converted in place. If the unit can't be determined exactly (e.
 
 - It only works on plain text. Sites that have special markup for measurements are not supported, as this could potentially break the site, and it is infeasible to support every site on the internet that does it in their own special way.
 - It probably shouldn't support text input fields.
-
 
 ---
 
