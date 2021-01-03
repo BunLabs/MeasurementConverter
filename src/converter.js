@@ -2,7 +2,7 @@
 (function (he) {
     'use strict';
 
-    const ignoreList = ['script', 'style', 'noscript', 'iframe', 'svg', 'input', 'textarea'];
+    const ignoreList = ['script', 'style', 'noscript', 'iframe', 'text', 'input', 'textarea'];
     const genericRegex = /(?<value>-?\d+(\.\d+)?)\s?(?<unit>°C|°F|C|F|℉|℃|°|degrees F|degrees C|degrees)(?=\W|$)/g;
     const fractionalRegex = /(?<value>(\d+|(\d+\s?)?([½⅓¼¾⅛⅜⅝⅞]|(\d\/\d))))\s?(?<unit>cups?|tsp|tbsp)/g
 
