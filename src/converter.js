@@ -3,7 +3,7 @@
     'use strict';
 
     const ignoreList = ['script', 'style', 'noscript', 'iframe', 'text', 'input', 'textarea'];
-    const genericRegex = /(?<value>-?\d+(\.\d+)?)\s?(?<unit>°C|°F|C|F|℉|℃|°|degrees F|degrees C|degrees)(?=\W|$)/g;
+    const genericRegex = /(?<value>-?\d+(\.\d+)?)\s?(?<unit>°C|°F|℉|℃|°|degrees F|degrees C|degrees)(?=\W|$)/g;
     const fractionalRegex = /(?<value>(\d+|(\d+\s?)?([½⅓¼¾⅛⅜⅝⅞]|(\d\/\d))))\s?(?<unit>cups?|tsp|tbsp)/g
 
     const mlPerUSCup = 240; // technically 236.5882365 but who cares, really
@@ -98,7 +98,6 @@
             return parseInt(num) / parseInt(denom);
         }
 
-        console.warn('[Unit Converter] Could not parse fraction "%s"');
         return parseFloat(value);
     }
 
