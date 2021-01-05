@@ -174,13 +174,13 @@
 
         if (conversions.length === 1) {
             const result = conversions[0];
-            return `<abbr class='converted-measurement' title='${he.encode(original)}'>${result.value} ${result.unit}</abbr>`;
+            return `<span class='converted-measurement' title='${he.encode(original)}'>${result.value} ${result.unit}</span>`;
         }
 
         let result = conversions
             .map(x => `${value} ${x.interpretation} = ${x.value} ${x.unit}`)
             .join('\n');
-        return `<abbr class='converted-measurement' title='${he.encode(result)}'>${he.encode(original)}</abbr>`;
+        return `<span class='converted-measurement' title='${he.encode(result)}'>${he.encode(original)}</span>`;
     }
 
     /**
