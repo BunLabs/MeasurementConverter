@@ -196,7 +196,9 @@
         let textNodes = [];
         let cursor = null;
         while (cursor = walker.nextNode()) {
-            textNodes.push(cursor.parentElement);
+            if (!textNodes.includes(cursor.parentElement)) {
+                textNodes.push(cursor.parentElement);
+            }
         };
         return textNodes;
     }
