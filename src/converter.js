@@ -4,7 +4,7 @@
 
     const ignoreList = ['script', 'style', 'noscript', 'iframe', 'text', 'input', 'textarea'];
     const genericRegex = /(?<value>-?\d+(\.\d+)?)\s?(?<unit>°C|°F|℉|℃|°|degrees F|degrees C|degrees)(?=\W|$)/g;
-    const fractionalRegex = /(?<value>(\d+|(\d+\s?)?([½⅓¼¾⅛⅜⅝⅞]|(\d\/\d))))\s?(?<unit>cups?|tsp|tbsp|teaspoons?|tablespoons?)/g
+    const fractionalRegex = /(?<value>(\d+|(\d+[\s-]?)?([½⅓¼¾⅛⅜⅝⅞]|(\d\/\d))))\s?(?<unit>cups?|tsp|tbsp|teaspoons?|tablespoons?)/g
 
     const mlPerUSCup = 240; // technically 236.5882365 but who cares, really
     const mlPerTsp = 5; // 4.92892159375
@@ -58,7 +58,7 @@
      * @returns {number} Returns the parsed number, or `null`.
      */
     function parseNumber(value) {
-        const fractionPattern = /(\d+\s?)?([½⅓¼¾⅛⅜⅝⅞]|\d\/\d)/;
+        const fractionPattern = /(\d+[\s-]?)?([½⅓¼¾⅛⅜⅝⅞]|\d\/\d)/;
         if (!fractionPattern.test(value)) {
             return parseFloat(value);
         }

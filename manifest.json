@@ -1,6 +1,6 @@
 {
     "name": "Measurement Converter",
-    "version": "0.4.7",
+    "version": "0.4.8",
     "description": "Automatically converts measurements to the Metric system.",
     "manifest_version": 2,
     "icons": {
