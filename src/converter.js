@@ -4,7 +4,7 @@
 
     const ignoreList = ['script', 'style', 'noscript', 'iframe', 'text', 'input', 'textarea'];
     const genericRegex = /(?<value>-?\d+(\.\d+)?)\s?(?<unit>°C|°F|℉|℃|°|degrees F|degrees C|degrees)(?=\W|$)/g;
-    const fractionalRegex = /(?<value>(\d+|(\d+\s?)?([½⅓¼¾⅛⅜⅝⅞]|(\d\/\d))))\s?(?<unit>cups?|tsp|tbsp)/g
+    const fractionalRegex = /(?<value>(\d+|(\d+\s?)?([½⅓¼¾⅛⅜⅝⅞]|(\d\/\d))))\s?(?<unit>cups?|tsp|tbsp|teaspoons?|tablespoons?)/g
 
     const mlPerUSCup = 240; // technically 236.5882365 but who cares, really
     const mlPerTsp = 5; // 4.92892159375
@@ -141,6 +141,8 @@
                 ];
 
             case 'tsp':
+            case 'teaspoon':
+            case 'teaspoons':
                 return [{
                     value: Math.round(value * mlPerTsp),
                     unit: 'mL',
@@ -148,6 +150,8 @@
                 }];
 
             case 'tbsp':
+            case 'tablespoon':
+            case 'tablespoons':
                 return [{
                     value: Math.round(value * mlPerTbsp),
                     unit: 'mL',

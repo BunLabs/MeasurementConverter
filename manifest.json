@@ -23,5 +23,5 @@
             "run_at": "document_idle"
         }
     ],
-    "content_security_policy": "default-src 'none'"
+    "content_security_policy": "default-src 'self'"
 }
