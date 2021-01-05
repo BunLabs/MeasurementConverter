@@ -63,7 +63,7 @@
             return parseFloat(value);
         }
 
-        const [p1, p2] = fractionPattern.exec(value);
+        const [_, p1, p2] = fractionPattern.exec(value);
         let n1 = parseFloat(p1);
         if (!n1) {
             n1 = 0;
@@ -94,7 +94,7 @@
         }
 
         if (/(\d+)\/(\d+)/g.test(value)) {
-            const [num, denom] = /(\d+)\/(\d+)/g.exec(value);
+            const [_, num, denom] = /(\d+)\/(\d+)/g.exec(value);
             return parseInt(num) / parseInt(denom);
         }
 
@@ -223,7 +223,7 @@
                     console.info('[Unit Converter] Processing "%s" in %o', args[0], e);
 
                     const match = args.pop();
-                    const value = parseFraction(match.value);
+                    const value = parseNumber(match.value);
                     return render(value, match.unit, args[0]);
                 });
             }
