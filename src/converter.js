@@ -214,6 +214,11 @@
     function process(element) {
         let textNodes = getTextElements(element);
         textNodes.forEach(e => {
+            // Hack to skip nodes we've likely passed already
+            if (e.querySelectorAll('.converted-measurement').length > 0) {
+                return;
+            }
+
             if (genericRegex.test(e.innerHTML)) {
                 e.innerHTML = e.innerHTML.replaceAll(genericRegex, (...args) => {
                     console.info('[Unit Converter] Processing "%s" in %o', args[0], e);
@@ -254,6 +259,7 @@
             characterData: true
         };
 
+        process(document.body);
         process(document.body);
         observer.observe(document.body, config);
     }
